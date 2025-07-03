@@ -1,0 +1,635 @@
+```{r}
+link_locura="https://docs.google.com/spreadsheets/d/e/2PACX-1vRlKbBagehW10J-kbK9KsXDd6wbJ21TWUTkv-NFRw7F1Ne0earsXK0Iv6v4Qnxb0xwfYHDh4IRoRySE/pub?gid=1509063522&single=true&output=csv"
+locura=read.csv(link_locura)
+names(locura)
+```
+
+```{r}
+summary(locura)
+```
+
+```{r}
+library(BBmisc)
+boxplot(BBmisc::normalize(locura[,2:11],method='range',range=c(0,10)))
+```
+
+```{r}
+boxplot(BBmisc::normalize(locura[,2:11],method='standardize'))
+```
+
+
+```{r}
+locura$inflation_rate=-1*locura$inflation_rate
+```
+
+
+```{r}
+library(ggplot2)
+library(dplyr)
+locura %>%
+  ggplot(aes(x = GDP_growth_por)) + 
+  geom_histogram(color = "black", fill = "hotpink1", bins = 40) +
+  ggtitle("Crecimiento anual del PBI de las 50 economías más grandes del mundo ") +
+  ylab("Frecuencia")+xlab("Tasa anual del crecimiento del PBI")+
+  geom_vline(xintercept =  mean(locura$GDP_growth_por, na.rm = TRUE), color = "red", linetype = "dashed", size = 1) + # Línea de la media
+  geom_vline(xintercept = median(locura$GDP_growth_por, na.rm = TRUE), color = "grey", linetype = "dashed", size = 1) + # Línea de la mediana
+  theme_minimal()
+```
+Tests de correlación entre variable dependiente e independientes:
+
+```{r}
+ggplot(locura, aes(x=GDP_growth_por, y=exports_gdp_por)) +
+  geom_point(colour="skyblue") +  xlab("% de crecimiento anual del PBI") +  ylab("Exportaciones de bienes y servicios") +
+  ggtitle("Relación entre el % de crecimiento anual del PBI y las exportaicones de bienes y servicios") +
+  theme_light()+ geom_smooth(method=lm,se=F)
+```
+
+```{r}
+#Prueba de correlación
+cor.test(locura$GDP_growth_por, locura$exports_gdp_por)
+```
+
+```{r}
+ggplot(locura, aes(x=GDP_growth_por, y=edu_govexp_gdp)) +
+  geom_point(colour="skyblue") +  xlab("% de crecimiento anual del PBI") +  ylab("Gasto del gobierno en educación") +
+  ggtitle("Relación entre el % de crecimiento anual del PBI y el gasto del gobierno en educación") +
+  theme_light()+ geom_smooth(method=lm,se=F)
+```
+
+```{r}
+#Prueba de correlación
+cor.test(locura$GDP_growth_por, locura$edu_govexp_gdp)
+```
+
+```{r}
+ggplot(locura, aes(x=GDP_growth_por, y=GDP_per_capita_growth_por)) +
+  geom_point(colour="skyblue") +  xlab("% de crecimiento anual del PBI") +  ylab("% del crecimiento del PBI per capita") +
+  ggtitle("Relación entre el % de crecimiento anual del PBI y el % de crecimiento del PBI per capita") +
+  theme_light()+ geom_smooth(method=lm,se=F)
+```
+
+```{r}
+#Prueba de correlación
+cor.test(locura$GDP_growth_por, locura$GDP_per_capita_growth_por)
+```
+
+```{r}
+ggplot(locura, aes(x=GDP_growth_por, y=inflation_rate)) +
+  geom_point(colour="skyblue") +  xlab("% de crecimiento anual del PBI") +  ylab("Tasa de inflación") +
+  ggtitle("Relación entre el % de crecimiento anual del PBI y la tasa de inflación") +
+  theme_light()+ geom_smooth(method=lm,se=F)
+```
+
+```{r}
+#Prueba de correlación
+cor.test(locura$GDP_growth_por, locura$inflation_rate)
+```
+
+```{r}
+ggplot(locura, aes(x=GDP_growth_por, y=military_gdp)) +
+  geom_point(colour="skyblue") +  xlab("% de crecimiento anual del PBI") +  ylab("Gasto en armamento militar") +
+  ggtitle("Relación entre el % de crecimiento anual del PBI y el gasto en armamento militar") +
+  theme_light()+ geom_smooth(method=lm,se=F)
+```
+
+```{r}
+#Prueba de correlación
+cor.test(locura$GDP_growth_por, locura$military_gdp)
+```
+
+```{r}
+ggplot(locura, aes(x=GDP_growth_por, y=health_exp_gdp)) +
+  geom_point(colour="skyblue") +  xlab("% de crecimiento anual del PBI") +  ylab("Gasto en salud como % del PBI") +
+  ggtitle("Relación entre el % de crecimiento anual del PBI y el gasto en salud como % del PBI") +
+  theme_light()+ geom_smooth(method=lm,se=F)
+```
+
+```{r}
+#Prueba de correlación
+cor.test(locura$GDP_growth_por, locura$health_exp_gdp)
+```
+
+```{r}
+ggplot(locura, aes(x=GDP_growth_por, y=R_._D_exp_GDP)) +
+  geom_point(colour="skyblue") +  xlab("% de crecimiento anual del PBI") +  ylab("Gasto en investigación y desarrollo como % del PBI") +
+  ggtitle("Relación entre el % de crecimiento anual del PBI y el gasto en investigación y desarrollo como % del PBI") +
+  theme_light()+ geom_smooth(method=lm,se=F)
+```
+
+```{r}
+#Prueba de correlación
+cor.test(locura$GDP_growth_por, locura$R_._D_exp_GDP)
+```
+
+```{r}
+ggplot(locura, aes(x=GDP_growth_por, y=gov_eff)) +
+  geom_point(colour="skyblue") +  xlab("% de crecimiento anual del PBI") +  ylab("Efectividad del Gobierno") +
+  ggtitle("Relación entre el % de crecimiento anual del PBI y la efectividad del gobierno") +
+  theme_light()+ geom_smooth(method=lm,se=F)
+```
+
+```{r}
+#Prueba de correlación
+cor.test(locura$GDP_growth_por, locura$gov_eff)
+```
+
+```{r}
+ggplot(locura, aes(x=GDP_growth_por, y=UHC_coverage)) +
+  geom_point(colour="skyblue") +  xlab("% de crecimiento anual del PBI") +  ylab("Covertura del Seguro Universal de Salúd") +
+  ggtitle("Relación entre el % de crecimiento anual del PBI y la covertura del Seguro Universal de Salúd") +
+  theme_light()+ geom_smooth(method=lm,se=F)
+```
+
+
+```{r}
+#Prueba de correlación
+cor.test(locura$GDP_growth_por, locura$UHC_coverage)
+```
+
+
+
+Regresión Gaussiana:
+
+```{r}
+library(dplyr)
+library(ggcorrplot)
+colNums=names(locura)[c(2:11)]
+numXs=locura[,colNums]
+ggcorrplot(cor(numXs),lab = T,show.diag = F)
+```
+
+```{r}
+# hipotesis en R
+modelo1=formula(GDP_growth_por~exports_gdp_por)
+```
+
+```{r}
+reg1=lm(modelo1,data=locura)
+summary(reg1)
+```
+
+```{r}
+modelo2=formula(GDP_growth_por~edu_govexp_gdp)
+reg2=lm(modelo2,data=locura)
+summary(reg2)
+```
+
+```{r}
+modelo3=formula(GDP_growth_por~GDP_per_capita_growth_por)
+reg3=lm(modelo3,data=locura)
+summary(reg3)
+```
+
+```{r}
+modelo4=formula(GDP_growth_por~inflation_rate)
+
+reg4=lm(modelo4,data=locura)
+summary(reg4)
+```
+
+```{r}
+modelo5=formula(GDP_growth_por~military_gdp)
+
+reg5=lm(modelo5,data=locura)
+summary(reg5)
+```
+
+```{r}
+modelo6=formula(GDP_growth_por~health_exp_gdp)
+
+reg6=lm(modelo6,data=locura)
+summary(reg6)
+```
+
+```{r}
+modelo7=formula(GDP_growth_por~R_._D_exp_GDP)
+
+reg7=lm(modelo7,data=locura)
+summary(reg7)
+```
+
+```{r}
+modelo8=formula(GDP_growth_por~gov_eff)
+
+reg8=lm(modelo8,data=locura)
+summary(reg8)
+```
+
+```{r}
+modelo9=formula(GDP_growth_por~UHC_coverage)
+
+reg9=lm(modelo9,data=locura)
+summary(reg9)
+```
+
+```{r}
+modelo10=formula(GDP_growth_por~exports_gdp_por+edu_govexp_gdp+GDP_per_capita_growth_por+inflation_rate+military_gdp+health_exp_gdp+R_._D_exp_GDP+gov_eff+UHC_coverage)
+
+reg10=lm(modelo10,data=locura)
+summary(reg10)
+```
+
+
+Análisis Factorial:
+
+```{r}
+dontselect=c("COUNTRY")
+select=setdiff(names(locura),dontselect)
+theData=locura[,select]
+row.names(theData)=locura$COUNTRY
+head(theData,10)
+```
+
+```{r}
+library(polycor)
+corMatrix=polycor::hetcor(theData)$correlations
+```
+
+```{r}
+round(corMatrix,2)
+```
+
+```{r}
+library(psych)
+psych::KMO(corMatrix) 
+```
+
+```{r}
+cortest.bartlett(corMatrix,n=nrow(theData))$p.value>0.05
+```
+
+```{r}
+library(matrixcalc)
+
+is.singular.matrix(corMatrix)
+```
+
+```{r}
+fa.parallel(theData, fa = 'fa',correct = T,plot = F)
+```
+
+```{r}
+library(GPArotation)
+resfa <- fa(theData,
+            nfactors = 4,
+            cor = 'mixed',
+            rotate = "varimax", #oblimin?
+            fm="minres")
+print(resfa$loadings)
+```
+
+```{r}
+print(resfa$loadings,cutoff = 0.5)
+```
+
+```{r}
+fa.diagram(resfa,main = "Resultados del EFA")
+```
+
+```{r}
+sort(resfa$communality)
+```
+
+```{r}
+sort(resfa$complexity)
+```
+
+```{r}
+resfa$TLI
+```
+
+```{r}
+resfa$rms
+```
+
+```{r}
+resfa$RMSEA
+```
+
+```{r}
+resfa$BIC
+```
+
+```{r}
+as.data.frame(resfa$scores)%>%head()
+```
+
+```{r}
+locura$ice_efa=resfa$scores[,2]
+locura$ids_efa=resfa$scores[,1]
+```
+
+```{r}
+summary(locura)
+```
+
+```{r}
+modelo11=formula(ice_efa~exports_gdp_por)
+reg11=lm(modelo11,data=locura)
+summary(reg11)
+```
+
+```{r}
+modelo12=formula(ice_efa~edu_govexp_gdp)
+reg12=lm(modelo12,data=locura)
+summary(reg12)
+```
+
+```{r}
+modelo13=formula(ice_efa~inflation_rate)
+
+reg13=lm(modelo13,data=locura)
+summary(reg13)
+```
+```{r}
+modelo14=formula(ice_efa~military_gdp)
+
+reg14=lm(modelo14,data=locura)
+summary(reg14)
+```
+
+```{r}
+modelo15=formula(ice_efa~health_exp_gdp)
+
+reg15=lm(modelo15,data=locura)
+summary(reg15)
+```
+
+```{r}
+modelo16=formula(ice_efa~R_._D_exp_GDP)
+
+reg16=lm(modelo16,data=locura)
+summary(reg16)
+```
+
+```{r}
+modelo17=formula(ice_efa~gov_eff)
+
+reg17=lm(modelo17,data=locura)
+summary(reg17)
+```
+
+```{r}
+modelo18=formula(ice_efa~UHC_coverage)
+
+reg18=lm(modelo18,data=locura)
+summary(reg18)
+```
+
+```{r}
+modelo19=formula(ice_efa~ids_efa)
+
+reg19=lm(modelo19,data=locura)
+summary(reg19)
+```
+
+```{r}
+modelo21=formula(ice_efa~exports_gdp_por+edu_govexp_gdp)
+
+reg21=lm(modelo21,data=locura)
+summary(reg21)
+```
+
+```{r}
+modelo22=formula(ice_efa~exports_gdp_por+edu_govexp_gdp+inflation_rate)
+
+reg22=lm(modelo22,data=locura)
+summary(reg22)
+```
+
+
+```{r}
+modelo23=formula(ice_efa~exports_gdp_por+edu_govexp_gdp+inflation_rate+military_gdp)
+
+reg23=lm(modelo23,data=locura)
+summary(reg23)
+```
+
+```{r}
+modelo24=formula(ice_efa~exports_gdp_por+edu_govexp_gdp+inflation_rate+military_gdp+health_exp_gdp)
+
+reg24=lm(modelo24,data=locura)
+summary(reg24)
+```
+
+```{r}
+modelo25=formula(ice_efa~exports_gdp_por+edu_govexp_gdp+inflation_rate+military_gdp+health_exp_gdp+R_._D_exp_GDP)
+
+reg25=lm(modelo25,data=locura)
+summary(reg25)
+```
+
+```{r}
+modelo26=formula(ice_efa~exports_gdp_por+edu_govexp_gdp+inflation_rate+military_gdp+health_exp_gdp+R_._D_exp_GDP+gov_eff)
+
+reg26=lm(modelo26,data=locura)
+summary(reg26)
+```
+
+```{r}
+modelo27=formula(ice_efa~exports_gdp_por+edu_govexp_gdp+inflation_rate+military_gdp+health_exp_gdp+R_._D_exp_GDP+gov_eff+UHC_coverage)
+
+reg27=lm(modelo27,data=locura)
+summary(reg27)
+```
+
+```{r}
+modelo28=formula(ice_efa~exports_gdp_por+edu_govexp_gdp+inflation_rate+military_gdp+health_exp_gdp+R_._D_exp_GDP+gov_eff+UHC_coverage+ids_efa)
+
+reg28=lm(modelo28,data=locura)
+summary(reg28)
+```
+
+
+```{r}
+modelo20=formula(ice_efa~exports_gdp_por+edu_govexp_gdp+inflation_rate+military_gdp+gov_eff+ids_efa)
+
+reg20=lm(modelo20,data=locura)
+summary(reg20)
+```
+
+```{r}
+modelo29=formula(ice_efa~exports_gdp_por+edu_govexp_gdp+inflation_rate+military_gdp+ids_efa)
+
+reg29=lm(modelo29,data=locura)
+summary(reg29)
+```
+
+
+Cluster:
+
+```{r}
+dataClus=locura[,c(2,5,6,7,10,12,13)]
+row.names(dataClus)=locura$COUNTRY
+dataClus
+```
+
+```{r}
+library(cluster)
+g.dist = daisy(dataClus, metric="gower")
+```
+
+Estrategia de Partición (PAM):
+```{r}
+## para PAM
+library(corrplot)
+library(BBmisc)
+library(ggplot2)
+
+library(factoextra)
+fviz_nbclust(dataClus, pam,diss=g.dist,method = "gap_stat",k.max = 10,verbose = F)
+```
+
+```{r}
+library(kableExtra)
+set.seed(123)
+res.pam=pam(g.dist,2,cluster.only = F)
+
+#nueva columna
+dataClus$pam=res.pam$cluster
+
+# ver
+
+head(dataClus,15)%>%kbl()%>%kable_styling()
+```
+
+```{r}
+fviz_silhouette(res.pam,print.summary = F)
+```
+
+```{r}
+silPAM=data.frame(res.pam$silinfo$widths)
+silPAM$country=row.names(silPAM)
+poorPAM=silPAM[silPAM$sil_width<0,'country']%>%sort()
+poorPAM
+```
+
+```{r}
+aggregate(.~ pam, data=dataClus,mean)
+```
+
+```{r}
+locura$pamICEpoor=locura$COUNTRY%in%poorPAM
+locura$pamICE=as.ordered(dataClus$pam)
+dataClus$pam=NULL
+```
+
+Estrategia Jerárquica (Agnes):
+
+```{r}
+## PARA JERARQUICO
+
+fviz_nbclust(dataClus, hcut,diss=g.dist,method = "gap_stat",k.max = 10,verbose = F,hc_func = "agnes")
+```
+
+```{r}
+set.seed(123)
+library(factoextra)
+
+res.agnes<- hcut(g.dist, k = 2,hc_func='agnes',hc_method = "ward.D")
+
+dataClus$agnes=res.agnes$cluster
+
+# ver
+
+head(dataClus,15)%>%kbl()%>%kable_styling()
+```
+
+```{r}
+# Visualize
+fviz_dend(res.agnes, cex = 0.7, horiz = T,main = "")
+```
+
+```{r}
+fviz_silhouette(res.agnes,print.summary = F)
+```
+
+```{r}
+silAGNES=data.frame(res.agnes$silinfo$widths)
+silAGNES$country=row.names(silAGNES)
+poorAGNES=silAGNES[silAGNES$sil_width<0,'country']%>%sort()
+poorAGNES
+```
+
+```{r}
+aggregate(.~ agnes, data=dataClus,mean)
+```
+
+```{r}
+locura$agnesICEpoor=locura$COUNTRY%in%poorAGNES
+locura$agnesICE=as.ordered(dataClus$agnes)
+dataClus$agnes=NULL
+```
+
+```{r}
+# verificar recodificacion
+table(locura$pamIDH,locura$agnesIDH,dnn = c('Particion','Aglomeracion'))
+```
+
+Estrategia Divisiva (DIANA):
+
+```{r}
+## PARA JERARQUICO
+
+fviz_nbclust(dataClus, hcut,diss=g.dist,method = "gap_stat",k.max = 10,verbose = F,hc_func = "diana")
+```
+
+```{r}
+set.seed(123)
+res.diana <- hcut(g.dist, k = 2,hc_func='diana')
+dataClus$diana=res.diana$cluster
+# veamos
+head(dataClus,15)%>%kbl%>%kable_styling()
+```
+
+```{r}
+# Visualize
+fviz_dend(res.diana, cex = 0.7, horiz = T, main = "")
+```
+
+```{r}
+fviz_silhouette(res.diana,print.summary = F)
+```
+
+```{r}
+silDIANA=data.frame(res.diana$silinfo$widths)
+silDIANA$country=row.names(silDIANA)
+poorDIANA=silDIANA[silDIANA$sil_width<0,'country']%>%sort()
+poorDIANA
+```
+
+```{r}
+aggregate(.~ diana, data=dataClus,mean)
+```
+
+```{r}
+original=aggregate(.~ diana, data=dataClus,mean)
+original[order(original$exports_gdp_por),]
+```
+
+```{r}
+locura$dianaICEpoor=locura$COUNTRY%in%poorDIANA
+locura$dianaICE=as.ordered(dataClus$diana)
+dataClus$diana=NULL
+```
+
+Visualización Comparativa:
+
+```{r}
+# k es la cantidad de dimensiones
+proyeccion = cmdscale(g.dist, k=2,add = T) 
+head(proyeccion$points,20)
+```
+
+```{r}
+# data frame prep:
+locura$dim1 <- proyeccion$points[,1]
+locura$dim2 <- proyeccion$points[,2]
+```
+
+```{r}
+library(ggrepel)
+base= ggplot(locura,aes(x=dim1, y=dim2,label=row.names(dataClus))) 
+base + geom_text_repel(size=3, max.overlaps = 50,min.segment.length = unit(0, 'lines'))
+```
+

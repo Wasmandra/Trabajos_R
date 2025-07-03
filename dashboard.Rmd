@@ -1,0 +1,89 @@
+---
+title: "Untitled"
+author: "Augusto Granados y Leonardo Argandoña"
+output: 
+  flexdashboard::flex_dashboard:
+    theme: cosmo
+    orientation: columns
+    vertical_layout: fill
+    source_code: embed
+---
+=====================================
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(stringi)
+library(ggplot2)
+library(corrplot)
+library(dplyr)
+library(rio)
+library(tidyverse)
+library(BBmisc)
+library(ggthemes)
+library(polycor)
+library(psych)
+library(matrixcalc)
+library(GPArotation)
+library(cluster)
+library(factoextra)
+library(kableExtra)
+library(modelsummary)
+library(plotly)
+library(sf)
+library(ggrepel)
+library(leaflet)
+library(DT)
+library(fontawesome)
+library(vtable)
+library(reshape2)
+library(tmap)
+
+htmltools::tagList(fontawesome::fa_html_dependency())
+
+computeMuestra = function(...) return("Muestra")
+computePaises = function(...) return(50)
+
+setwd("C:/Users/Augusto/Desktop/Ciclo 2025-1/Estadistica para el Análisis Político 2/EAP2 - Tf")
+
+##Creamos el dataframe
+locura=import("locura.xlsx")
+
+
+
+```
+
+### Datos de la muestra
+```{r}
+muestra = computeMuestra()
+valueBox(muestra, icon = "fa-solid fa-flask")
+```
+
+### Economías más grandes del mundo 
+
+```{r}
+paises = computePaises()
+valueBox(paises, icon = "fas fa-earth-americas")
+```
+
+### Hipótesis
+
+* **Pregunta de investigación:**
+¿Qué factores sociales y económicos han influido en el crecimiento y/o variaciones del PIB entre los años 2020 y 2021 en las 50 economías más grandes del mundo?
+
+* **Justificación:**
+El estudio del crecimiento económico mediante el PIB, y de sus determinantes, es fundamental para entender los diversos procesos sociales que pueden estar interrelacionados con dicho crecimiento. El análisis de estos 50 países, los cuales representan a la mayor parte de la economía global, nos ofrece una amplia y valiosa visión comparativa. El período comprendido entre el 2020 y el 2021 es de particular interés dados los efectos que trajo consigo la pandemia de COVID-19. Esto nos permitirá entonces observar de manera directa dichos efectos durante el tiempo de la crisis. El comprender las variables que impulsan el crecimiento económico puede permitirnos conocer acerca de la toma de decisiones de políticas públicas en dicho período. Finalmente, creemos que la originalidad del presente trabajo recae en el enfoque de tomar en cuenta a las 50 economías más grandes del mundo, junto con las demás variables que expondremos más adelante.
+
+* **Hipótesis:**
+Esperamos que, dado que el PIB es nuestra variable independiente, tenga cierta variación del año 2020 al 2021, bajo la influencia de nuestras variables independientes, que abarcan cuestiones sociopolíticas y económicas. Con ello, y teniendo en cuenta el contexto de la pandemia de COVID-19, esperamos que el PIB de dichas economías crezca. 
+
+
+Column {data-width=400}{.tabset}
+-----------------------------------------------------------------------
+
+### Mapa de Indice de Crecimiento Económico por Economías
+
+
+
